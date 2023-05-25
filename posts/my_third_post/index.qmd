@@ -1,7 +1,0 @@
----
-title: "my third post"
-author: "tarjae"
----
-
-this is my test post
----
