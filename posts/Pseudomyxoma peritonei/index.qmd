@@ -1,6 +1,7 @@
 ---
 title: "Pseudomyxoma peritonei"
 author: "TJ"
+image: "Pseudomyxom1.png"
 ---
 
 ## this is my test post

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="TJ">
+<meta name="dcterms.date" content="2023-09-30">
+
+<title>quartoCourseBlog - Animated Bar Plot with Plotly</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="../../site_libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">quartoCourseBlog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/CrumpLab/quartoCourseBlog" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/MattCrumpLab" rel="" target=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Animated Bar Plot with Plotly</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">plotly</div>
+                <div class="quarto-category">animation</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>TJ </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 30, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This is a plotly animation using frame label tweaking. See <a href="#0">original code from stackoverflow</a>:</p>
+<section id="animated-bar-chart-plotly" class="level2">
+<h2 class="anchored" data-anchor-id="animated-bar-chart-plotly">Animated Bar Chart (Plotly):</h2>
+<p><a href="#fig-plotly_animated">Figure&nbsp;1</a> shows an animated bar chart with user defined frame label.</p>
+<div class="cell">
+<details>
+<summary>expand for full code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>DF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">rep</span>(<span class="fu">seq</span>(1980L, 2020L), <span class="at">each =</span> <span class="dv">12</span>), </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">month =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="dv">41</span>), </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">month_char =</span> <span class="fu">rep</span>(<span class="fu">factor</span>(month.abb), <span class="dv">41</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">avg_depth =</span> <span class="fu">runif</span>(<span class="dv">492</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>DF <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="sc">~</span>year, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="sc">~</span>avg_depth,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">frame =</span> <span class="sc">~</span><span class="fu">paste0</span>(<span class="fu">sprintf</span>(<span class="st">"%02d"</span>, month), <span class="st">" - "</span>, month_char),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">'bar'</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">animation_opts</span>(<span class="at">frame =</span> <span class="dv">1500</span>, <span class="at">redraw =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> <span class="co"># Increase the frame duration for slower animation</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">animation_slider</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">currentvalue =</span> <span class="fu">list</span>(<span class="at">prefix =</span> <span class="st">"Month: "</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-plotly_animated" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-bcfde09373e050ebc501" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-bcfde09373e050ebc501">{"x":{"visdat":{"b762eacc032":["function () ","plotlyVisDat"]},"cur_data":"b762eacc032","attrs":{"b762eacc032":{"x":{},"y":{},"frame":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"year","range":[1978,2022]},"yaxis":{"domain":[0,1],"automargin":true,"title":"avg_depth","range":[-0.048483965790364895,1.0486711725709028]},"hovermode":"closest","showlegend":false,"sliders":[{"currentvalue":{"prefix":"Month: ","xanchor":"right","font":{"size":16,"color":"rgba(204,204,204,1)"}},"steps":[{"method":"animate","args":[["01 - Jan"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"01 - Jan","value":"01 - Jan"},{"method":"animate","args":[["02 - Feb"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"02 - Feb","value":"02 - Feb"},{"method":"animate","args":[["03 - Mar"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"03 - Mar","value":"03 - Mar"},{"method":"animate","args":[["04 - Apr"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"04 - Apr","value":"04 - Apr"},{"method":"animate","args":[["05 - May"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"05 - May","value":"05 - May"},{"method":"animate","args":[["06 - Jun"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"06 - Jun","value":"06 - Jun"},{"method":"animate","args":[["07 - Jul"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"07 - Jul","value":"07 - Jul"},{"method":"animate","args":[["08 - Aug"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"08 - Aug","value":"08 - Aug"},{"method":"animate","args":[["09 - Sep"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"09 - Sep","value":"09 - Sep"},{"method":"animate","args":[["10 - Oct"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"10 - Oct","value":"10 - Oct"},{"method":"animate","args":[["11 - Nov"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"11 - Nov","value":"11 - Nov"},{"method":"animate","args":[["12 - Dec"],{"transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false},"mode":"immediate"}],"label":"12 - Dec","value":"12 - Dec"}],"visible":true,"pad":{"t":40}}],"updatemenus":[{"type":"buttons","direction":"right","showactive":false,"y":0,"x":0,"yanchor":"top","xanchor":"right","pad":{"t":60,"r":5},"buttons":[{"label":"Play","method":"animate","args":[null,{"fromcurrent":true,"mode":"immediate","transition":{"duration":1500,"easing":"linear"},"frame":{"duration":1500,"redraw":false}}]}]}]},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.0454560536891222,0.51891118474304676,0.66821949067525566,0.64880878361873329,0.0081878043711185455,0.92626849631778896,0.73442247696220875,0.29252641461789608,0.078795058885589242,0.54955351981334388,0.16750238370150328,0.62557900347746909,0.37939127814024687,0.18132146308198571,0.29487390234135091,0.15159280551597476,0.62016617460176349,0.8940614266321063,0.60123668634332716,0.045131744351238012,0.36107810842804611,0.48792409081943333,0.01546816504560411,0.74804889992810786,0.38247359846718609,0.93633035011589527,0.57168110180646181,0.0035087075084447861,0.83352673682384193,0.039391878992319107,0.7300717132166028,0.29649263736791909,0.70858258614316583,0.51847423403523862,0.51967516681179404,0.60879644146189094,0.58616111683659256,0.39254004717804492,0.80446166824549437,0.42969492240808904,0.84644312644377351],"frame":"01 - Jan","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"frames":[{"name":"01 - Jan","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.0454560536891222,0.51891118474304676,0.66821949067525566,0.64880878361873329,0.0081878043711185455,0.92626849631778896,0.73442247696220875,0.29252641461789608,0.078795058885589242,0.54955351981334388,0.16750238370150328,0.62557900347746909,0.37939127814024687,0.18132146308198571,0.29487390234135091,0.15159280551597476,0.62016617460176349,0.8940614266321063,0.60123668634332716,0.045131744351238012,0.36107810842804611,0.48792409081943333,0.01546816504560411,0.74804889992810786,0.38247359846718609,0.93633035011589527,0.57168110180646181,0.0035087075084447861,0.83352673682384193,0.039391878992319107,0.7300717132166028,0.29649263736791909,0.70858258614316583,0.51847423403523862,0.51967516681179404,0.60879644146189094,0.58616111683659256,0.39254004717804492,0.80446166824549437,0.42969492240808904,0.84644312644377351],"frame":"01 - Jan","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"02 - Feb","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.78195940284058452,0.0028872473631054163,0.88748443918302655,0.56882709730416536,0.057929869275540113,0.75871649896726012,0.90385604300536215,0.95237383572384715,0.059549812693148851,0.43629423552192748,0.69776365044526756,0.89513095421716571,0.16245002788491547,0.89574011624790728,0.98226467799395323,0.41320071904920042,0.34961580601520836,0.8378198342397809,0.5721139598172158,0.38522519916296005,0.27470303326845169,0.83233355032280087,0.54552028584294021,0.3640522020868957,0.9766211025416851,0.16130745247937739,0.1555120418779552,0.52222087420523167,0.35766023700125515,0.3845494466368109,0.75058261514641345,0.20414445176720619,0.23221606877632439,0.7978284596465528,0.57814114820212126,0.29505307273939252,0.40399717399850488,0.64917708816938102,0.94400449725799263,0.063315469538792968,0.10080326185561717],"frame":"02 - Feb","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"03 - Mar","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.50594543712213635,0.15599942812696099,0.8837343908380717,0.066772983875125647,0.27134041371755302,0.15190468798391521,0.93266444816254079,0.94078624900430441,0.25741440826095641,0.82651761872693896,0.93200172996148467,0.88176515232771635,0.65850484906695783,0.19936839677393436,0.75496918498538435,0.70770736294798553,0.11309179454110563,0.2172324366401881,0.09983797837048769,0.61454915441572666,0.90392757975496352,0.56155437603592873,0.32940640579909086,0.28835992375388741,0.44169866037555039,0.98197998711839318,0.95140554965473711,0.80485226726159453,0.98110929457470775,0.5182837147731334,0.47048154752701521,0.11520765675231814,0.037252411711961031,0.59614498191513121,0.9266817111056298,0.33191408007405698,0.37678619893267751,0.7774753833655268,0.38601542683318257,0.92020303686149418,0.024113700026646256],"frame":"03 - Mar","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"04 - Apr","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.9964731833897531,0.60367838363163173,0.04856262868270278,0.68054890562780201,0.5668095899745822,0.41071178135462105,0.042880213120952249,0.14340406702831388,0.79577217809855938,0.79923979472368956,0.93599654594436288,0.84962168987840414,0.97827792493626475,0.25312716886401176,0.30035171727649868,0.0013867223169654608,0.036507321055978537,0.18725696532055736,0.99468951858580112,0.74392550205811858,0.69354790798388422,0.032407092861831188,0.80726466747000813,0.45633115316741168,0.23379751038737595,0.040960275568068027,0.34691036283038557,0.72871605772525072,0.86186856986023486,0.23781744716688991,0.65480434941127896,0.64821500075049698,0.10452562663704157,0.48214990156702697,0.60794562916271389,0.58762893662787974,0.4117271585855633,0.37142188102006912,0.60909113008528948,0.26431817491538823,0.64621183229610324],"frame":"04 - Apr","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"05 - May","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.42260699602775276,0.56408077478408813,0.7344588222913444,0.65053046913817525,0.18009474663995206,0.98392902105115354,0.19745509698987007,0.75939757097512484,0.054923341609537601,0.64330930262804031,0.54620184260420501,0.11589807644486427,0.48894356447272003,0.41614570119418204,0.49892167979851365,0.22327612247318029,0.24686354794539511,0.074473158689215779,0.017175455112010241,0.98979084705933928,0.96163757494650781,0.031253589084371924,0.91426720935851336,0.15387609018944204,0.34024143754504621,0.16308477031998336,0.66580217005684972,0.34570886753499508,0.88467006082646549,0.60243835649453104,0.82966394978575408,0.66305068391375244,0.950875801499933,0.70090679707936943,0.96486614109016955,0.85792783205397427,0.69336243136785924,0.39676181110553443,0.66637432225979865,0.86701254197396338,0.73229978675954044],"frame":"05 - May","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"06 - Jun","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.097532844869419932,0.10976048302836716,0.039553205948323011,0.14648713148199022,0.56129801669158041,0.30559530225582421,0.90722987800836563,0.7557769394479692,0.75759112043306231,0.67054792516864836,0.33872844465076923,0.23061204631812871,0.2204410508275032,0.24152811313979328,0.35359590873122215,0.59169123275205493,0.67290904489345849,0.59320728527382016,0.21796354441903532,0.1921512340195477,0.52752102119848132,0.26968320412561297,0.99306586501188576,0.17489177617244422,0.87744508753530681,0.21918809157796204,0.020737943472340703,0.56164518906734884,0.35509257926605642,0.50156435091048479,0.0084120265673846006,0.081834676675498486,0.59053321438841522,0.65552688110619783,0.11556932376697659,0.99494160152971745,0.66657846048474312,0.83020334527827799,0.031003734096884727,0.82278352836146951,0.80667197401635349],"frame":"06 - Jun","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"07 - Jul","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.98855708912014961,0.27370931510813534,0.97216755617409945,0.83302021003328264,0.27846145769581199,0.88430360914207995,0.332406937610358,0.88285664399154484,0.27907170983962715,0.61343188839964569,0.43105335556901991,0.93244386580772698,0.61374042788520455,0.49832621961832047,0.55409379093907773,0.15768970362842083,0.26319155120290816,0.96359167294576764,0.76608399022370577,0.61145510477945209,0.89412661083042622,0.8483143737539649,0.49530102568678558,0.4577283076941967,0.56712826923467219,0.12272992101497948,0.23645926360040903,0.85382328694686294,0.90152694936841726,0.035965672461315989,0.72900998149998486,0.55979701830074191,0.9988004844635725,0.59066508268006146,0.89870126475580037,0.91647590463981032,0.069712283555418253,0.84380264906212687,0.14712124620564282,0.68418140173889697,0.68818939873017371],"frame":"07 - Jul","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"08 - Aug","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.69798100483603776,0.88301837863400578,0.046754572540521622,0.50501861306838691,0.30714047304354608,0.76309977122582495,0.67327642743475735,0.51992294332012534,0.068380017997696996,0.64684673515148461,0.48118766862899065,0.97301275259815156,0.7924777518492192,0.23568465118296444,0.32644322467967868,0.12611357448622584,0.89365393505431712,0.043464834336191416,0.47537015355192125,0.35341696627438068,0.17489222786389291,0.42634403076954186,0.67095648893155158,0.29216140345670283,0.027692341012880206,0.99765938427299261,0.64807974500581622,0.77254148852080107,0.62423784052953124,0.43629651260562241,0.24527713423594832,0.94423051201738417,0.74958511372096837,0.25770868710242212,0.88289957027882338,0.38555786199867725,0.23934933892451227,0.30425002030096948,0.27445734874345362,0.86243875580839813,0.35776974493637681],"frame":"08 - Aug","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"09 - Sep","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.25520318350754678,0.23928057146258652,0.70527713908813894,0.057922803796827793,0.47704833932220936,0.3694625289645046,0.67006743559613824,0.19308803952299058,0.97716752928681672,0.25390367675572634,0.38226507557556033,0.6321244272403419,0.24136993102729321,0.31703362823463976,0.96150567778386176,0.43693964765407145,0.18000923865474761,0.56535052019171417,0.24586953851394355,0.15066641219891608,0.75169269787147641,0.63185065682046115,0.067460948135703802,0.87742360634729266,0.69254340883344412,0.38455515634268522,0.70270636258646846,0.96784306457266212,0.72877499298192561,0.66685298131778836,0.98864191421307623,0.86126945191062987,0.12416489887982607,0.97236933303065598,0.60515281208790839,0.29829749255441129,0.45173870073631406,0.64010799559764564,0.54090402764268219,0.50375764537602663,0.55430354434065521],"frame":"09 - Sep","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"10 - Oct","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.40786511031910777,0.46255422011017799,0.35580992582254112,0.58203627192415297,0.081606932682916522,0.82820415310561657,0.82548866071738303,0.43956670095212758,0.75972920516505837,0.7938969642855227,0.88216838077642024,0.88481625192798674,0.25313024548813701,0.64356529735960066,0.040638968581333756,0.92815724038518965,0.76792869810014963,0.14625160512514412,0.48209830117411911,0.88100845576263964,0.10961769847199321,0.17029492161236703,0.27692040638066828,0.17734028724953532,0.076895654434338212,0.077137110522016883,0.33594142040237784,0.6144838435575366,0.7726448099128902,0.70224241074174643,0.95195350889116526,0.12980956281535327,0.2188575949985534,0.47961044916883111,0.75759275304153562,0.75230375328101218,0.17650514398701489,0.40435443888418376,0.98144790390506387,0.72927068592980504,0.096669458551332355],"frame":"10 - Oct","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"11 - Nov","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.55489105591550469,0.34249010612256825,0.74224410974420607,0.29700813628733158,0.52198143675923347,0.97636572504416108,0.72803165437653661,0.18286299263127148,0.051412891130894423,0.65971546620130539,0.91117863380350173,0.20685747661627829,0.095443327212706208,0.43659019935876131,0.54014773573726416,0.045427774544805288,0.49538597534410655,0.44911178527399898,0.27603544504381716,0.35012041451409459,0.66003141459077597,0.8445884648244828,0.57456058147363365,0.33501113532111049,0.97631267784163356,0.32801896496675909,0.42116380878724158,0.43012893619015813,0.91079635336063802,0.062944497680291533,0.57707943022251129,0.063231165753677487,0.71328227873891592,0.27105446369387209,0.78030329779721797,0.77184058958664536,0.069358850596472621,0.703557088971138,0.50052186660468578,0.88954775338061154,0.39056259673088789],"frame":"11 - Nov","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]},{"name":"12 - Dec","data":[{"x":[1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020],"y":[0.75905090779997408,0.67475835303775966,0.55482978909276426,0.13136138743720949,0.29547738539986312,0.61180484038777649,0.72990066814236343,0.41434028279036283,0.87538690445944667,0.88346200273372233,0.78026932058855891,0.79133138549514115,0.81394184078089893,0.95309244003146887,0.33558651246130466,0.1882501591462642,0.37461967463605106,0.61295274994336069,0.58448145841248333,0.75644879275932908,0.017189098056405783,0.9509529119823128,0.28075983398593962,0.57825304521247745,0.88001467240974307,0.6168059732299298,0.95643387455493212,0.9339811853133142,0.57037814217619598,0.3073391611687839,0.7792823885101825,0.50308488425798714,0.53262140997685492,0.057290353812277317,0.60578009020537138,0.048210643464699388,0.11069037206470966,0.45068320748396218,0.80714983190409839,0.78194462298415601,0.42172986548393965],"frame":"12 - Dec","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","visible":true}],"traces":[0]}],"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<figcaption class="figure-caption">Figure&nbsp;1: Animated bar chart</figcaption>
+</figure>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
