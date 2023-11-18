@@ -1,5 +1,75 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "The content on this page is from about.qmd. Edit that file to change how this page looks.\n“About” pages are special quarto template pages, with multiple options: https://quarto.org/docs/websites/website-about.html.\nTry changing the template type from jolla to one of the other options for a different look and feel."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "quartoCourseBlog",
+    "section": "",
+    "text": "Likert plot\n\n\n\n\n\n\n\nlikert\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nPseudomyxoma peritonei\n\n\n\n\n\n\n\nPseudomyxoma peritonei\n\n\nintraoperative image\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nPlotly animation\n\n\n\n\n\n\n\nbarplot\n\n\nplotly\n\n\nanimation\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nExample assignment\n\n\n\n\n\n\n\ngoals\n\n\ngeneral\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2022\n\n\nMatt Crump\n\n\n\n\n\n\n  \n\n\n\n\nMy First post\n\n\n\n\n\n\n\ngoals\n\n\ngeneral\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2022\n\n\nMatt Crump\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/Example_assignment/index.html",
+    "href": "posts/Example_assignment/index.html",
+    "title": "Example assignment",
+    "section": "",
+    "text": "This assignment engages you in the process of introspection. Your task is to use introspection to evaluate and describe your own mental imagery abilities. Attempt to answer the following kinds of questions. What is your mental imagery like? Do you have mental imagery for different kinds of senses? Is your mental imagery vivid and life-like or very different from normal perception? How would you describe your mental imagery?\nYou should write a minimum of 250 words, but feel free to write more. Submit your document on blackboard by the due date."
+  },
+  {
+    "objectID": "posts/Example_assignment/index.html#my-mental-imagery",
+    "href": "posts/Example_assignment/index.html#my-mental-imagery",
+    "title": "Example assignment",
+    "section": "My mental imagery",
+    "text": "My mental imagery\nMy mental imagery is like…"
+  },
+  {
+    "objectID": "posts/likert/index.html",
+    "href": "posts/likert/index.html",
+    "title": "Likert plot",
+    "section": "",
+    "text": "Show the code\n# https://stackoverflow.com/questions/77505716/how-to-add-count-labels-to-faceted-likert-plot-ggstatsgglikert\n\n#remotes::install_github(\"larmarange/ggstats\")\nlibrary(ggstats)\nlibrary(ggplot2)\nlibrary(dplyr)\n\nlikert_levels &lt;- c(\"strongly disagree\", \"disagree\", \"neutral\", \"agree\", \"strongly agree\", NA)\nset.seed(123)\ndf &lt;- data.frame(\n  q1 = sample(likert_levels, 100, replace = TRUE),\n  q2 = sample(likert_levels, 100, replace = TRUE),\n  q3 = sample(likert_levels, 100, replace = TRUE),\n  group = sample(c(\"pre\", \"post\"), 100, replace = TRUE)\n) |&gt; \n  mutate(across(-group, ~factor(.x, levels = setdiff(likert_levels, NA))),\n         group = factor(group, levels = c(\"pre\", \"post\")))\n\np &lt;- gglikert(\n  data = df,\n  include = q1:q3,\n  add_labels = FALSE\n)\n\np_df &lt;- layer_data(p)\np_df$correct_x &lt;- (p_df$xmax + p_df$xmin) / 2\np + annotate(geom=\"text\", x = p_df$correct_x, y = p_df$y, label = p_df$count)"
+  },
+  {
+    "objectID": "posts/likert/index.html#likert-plot",
+    "href": "posts/likert/index.html#likert-plot",
+    "title": "Likert plot",
+    "section": "",
+    "text": "Show the code\n# https://stackoverflow.com/questions/77505716/how-to-add-count-labels-to-faceted-likert-plot-ggstatsgglikert\n\n#remotes::install_github(\"larmarange/ggstats\")\nlibrary(ggstats)\nlibrary(ggplot2)\nlibrary(dplyr)\n\nlikert_levels &lt;- c(\"strongly disagree\", \"disagree\", \"neutral\", \"agree\", \"strongly agree\", NA)\nset.seed(123)\ndf &lt;- data.frame(\n  q1 = sample(likert_levels, 100, replace = TRUE),\n  q2 = sample(likert_levels, 100, replace = TRUE),\n  q3 = sample(likert_levels, 100, replace = TRUE),\n  group = sample(c(\"pre\", \"post\"), 100, replace = TRUE)\n) |&gt; \n  mutate(across(-group, ~factor(.x, levels = setdiff(likert_levels, NA))),\n         group = factor(group, levels = c(\"pre\", \"post\")))\n\np &lt;- gglikert(\n  data = df,\n  include = q1:q3,\n  add_labels = FALSE\n)\n\np_df &lt;- layer_data(p)\np_df$correct_x &lt;- (p_df$xmax + p_df$xmin) / 2\np + annotate(geom=\"text\", x = p_df$correct_x, y = p_df$y, label = p_df$count)"
+  },
+  {
+    "objectID": "posts/my_first_post/index.html",
+    "href": "posts/my_first_post/index.html",
+    "title": "My First post",
+    "section": "",
+    "text": "This is an example first post. Whatever you write here will appear inside your post.\nIt is possible to write lists:\nAnd make headers"
+  },
+  {
+    "objectID": "posts/my_first_post/index.html#this-is-a-second-level-heading",
+    "href": "posts/my_first_post/index.html#this-is-a-second-level-heading",
+    "title": "My First post",
+    "section": "This is a second level heading",
+    "text": "This is a second level heading\nYou can include images, and many other kinds of content.\nIf you are using the visual editor in Rstudio you can drag images onto the editor to insert them into the document. Otherwise, you need to place the image inside of the folder for this post, and then you can insert it to your post directly, like this:\n\nThe first image in a blog post will also be used on the listings page."
+  },
+  {
+    "objectID": "posts/plotly_animation/index.html",
+    "href": "posts/plotly_animation/index.html",
+    "title": "Plotly animation",
+    "section": "",
+    "text": "Show the code\nlibrary(dplyr)\nlibrary(plotly)\nlibrary(knitr)\n\nDF &lt;- data.frame(\n  year = rep(seq(1980L, 2020L), each = 12), \n  month = rep(1:12, 41), \n  month_char = rep(factor(month.abb), 41),\n  avg_depth = runif(492)\n)\n\np &lt;- DF %&gt;%\n  plot_ly(\n    x = ~year, \n    y = ~avg_depth,\n    frame = ~paste0(sprintf(\"%02d\", month), \" - \", month_char),\n    type = 'bar'\n  ) %&gt;% \n  animation_opts(frame = 1500, redraw = FALSE) %&gt;% # Increase the frame duration for slower animation\n  animation_slider(\n    currentvalue = list(prefix = \"Month: \")\n  )\n\nexport(p, file = \"Animated_barplot.png\")"
+  },
+  {
+    "objectID": "posts/plotly_animation/index.html#animated-bar-chart-plotly",
+    "href": "posts/plotly_animation/index.html#animated-bar-chart-plotly",
+    "title": "Plotly animation",
+    "section": "",
+    "text": "Show the code\nlibrary(dplyr)\nlibrary(plotly)\nlibrary(knitr)\n\nDF &lt;- data.frame(\n  year = rep(seq(1980L, 2020L), each = 12), \n  month = rep(1:12, 41), \n  month_char = rep(factor(month.abb), 41),\n  avg_depth = runif(492)\n)\n\np &lt;- DF %&gt;%\n  plot_ly(\n    x = ~year, \n    y = ~avg_depth,\n    frame = ~paste0(sprintf(\"%02d\", month), \" - \", month_char),\n    type = 'bar'\n  ) %&gt;% \n  animation_opts(frame = 1500, redraw = FALSE) %&gt;% # Increase the frame duration for slower animation\n  animation_slider(\n    currentvalue = list(prefix = \"Month: \")\n  )\n\nexport(p, file = \"Animated_barplot.png\")"
+  },
+  {
     "objectID": "readme.html",
     "href": "readme.html",
     "title": "Using this quarto course blog template",
@@ -82,61 +152,5 @@
     "title": "Using this quarto course blog template",
     "section": "",
     "text": "See this growing list of quarto resources for much, much more:\nhttps://github.com/mcanouil/awesome-quarto"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "The content on this page is from about.qmd. Edit that file to change how this page looks.\n“About” pages are special quarto template pages, with multiple options: https://quarto.org/docs/websites/website-about.html.\nTry changing the template type from jolla to one of the other options for a different look and feel."
-  },
-  {
-    "objectID": "posts/my_first_post/index.html",
-    "href": "posts/my_first_post/index.html",
-    "title": "My First post",
-    "section": "",
-    "text": "This is an example first post. Whatever you write here will appear inside your post.\nIt is possible to write lists:\nAnd make headers"
-  },
-  {
-    "objectID": "posts/my_first_post/index.html#this-is-a-second-level-heading",
-    "href": "posts/my_first_post/index.html#this-is-a-second-level-heading",
-    "title": "My First post",
-    "section": "This is a second level heading",
-    "text": "This is a second level heading\nYou can include images, and many other kinds of content.\nIf you are using the visual editor in Rstudio you can drag images onto the editor to insert them into the document. Otherwise, you need to place the image inside of the folder for this post, and then you can insert it to your post directly, like this:\n\nThe first image in a blog post will also be used on the listings page."
-  },
-  {
-    "objectID": "posts/Example_assignment/index.html",
-    "href": "posts/Example_assignment/index.html",
-    "title": "Example assignment",
-    "section": "",
-    "text": "This assignment engages you in the process of introspection. Your task is to use introspection to evaluate and describe your own mental imagery abilities. Attempt to answer the following kinds of questions. What is your mental imagery like? Do you have mental imagery for different kinds of senses? Is your mental imagery vivid and life-like or very different from normal perception? How would you describe your mental imagery?\nYou should write a minimum of 250 words, but feel free to write more. Submit your document on blackboard by the due date."
-  },
-  {
-    "objectID": "posts/Example_assignment/index.html#my-mental-imagery",
-    "href": "posts/Example_assignment/index.html#my-mental-imagery",
-    "title": "Example assignment",
-    "section": "My mental imagery",
-    "text": "My mental imagery\nMy mental imagery is like…"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "quartoCourseBlog",
-    "section": "",
-    "text": "Pseudomyxoma peritonei\n\n\n\n\n\n\n\n\n\n\n\n\nTJ\n\n\n\n\n\n\n  \n\n\n\n\nMy First post\n\n\n\n\n\n\n\ngoals\n\n\ngeneral\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2022\n\n\nMatt Crump\n\n\n\n\n\n\n  \n\n\n\n\nAnimated Bar Plot with Plotly\n\n\n\n\n\n\n\nplotly\n\n\nanimation\n\n\n\n\n\n\n\n\n\n\n\nInvalid Date\n\n\nTJ\n\n\n\n\n\n\n  \n\n\n\n\nExample assignment\n\n\n\n\n\n\n\ngoals\n\n\ngeneral\n\n\n\n\n\n\n\n\n\n\n\nOct 21, 2022\n\n\nMatt Crump\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "posts/plotly_animation/index.html",
-    "href": "posts/plotly_animation/index.html",
-    "title": "Animated Bar Plot with Plotly",
-    "section": "",
-    "text": "This is a plotly animation using frame label tweaking. See original code from stackoverflow:"
-  },
-  {
-    "objectID": "posts/plotly_animation/index.html#animated-bar-chart-plotly",
-    "href": "posts/plotly_animation/index.html#animated-bar-chart-plotly",
-    "title": "Animated Bar Plot with Plotly",
-    "section": "Animated Bar Chart (Plotly):",
-    "text": "Animated Bar Chart (Plotly):\nFigure 1 shows an animated bar chart with user defined frame label.\n\n\nexpand for full code\nlibrary(dplyr)\nlibrary(plotly)\n\nDF &lt;- data.frame(\n  year = rep(seq(1980L, 2020L), each = 12), \n  month = rep(1:12, 41), \n  month_char = rep(factor(month.abb), 41),\n  avg_depth = runif(492)\n)\n\nDF %&gt;%\n  plot_ly(\n    x = ~year, \n    y = ~avg_depth,\n    frame = ~paste0(sprintf(\"%02d\", month), \" - \", month_char),\n    type = 'bar'\n  ) %&gt;%\n  animation_opts(frame = 1500, redraw = FALSE) %&gt;% # Increase the frame duration for slower animation\n  animation_slider(\n    currentvalue = list(prefix = \"Month: \")\n  )\n\n\n\n\n\nFigure 1: Animated bar chart"
   }
 ]

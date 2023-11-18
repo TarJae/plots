@@ -1,0 +1,16 @@
+{
+  "hash": "987dcb82900b72cb6f6cd79d383e1ae3",
+  "result": {
+    "markdown": "---\ntitle: \"Likert plot\"\nauthor: \"tarjae\"\ncategories: [likert]\nimage: \"Likert.png\"\nformat:\n  html:\n    code-fold: true\n    code-summary: \"Show the code\"\n---\n\n\n## Likert plot:\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# https://stackoverflow.com/questions/77505716/how-to-add-count-labels-to-faceted-likert-plot-ggstatsgglikert\n\n#remotes::install_github(\"larmarange/ggstats\")\nlibrary(ggstats)\nlibrary(ggplot2)\nlibrary(dplyr)\n\nlikert_levels <- c(\"strongly disagree\", \"disagree\", \"neutral\", \"agree\", \"strongly agree\", NA)\nset.seed(123)\ndf <- data.frame(\n  q1 = sample(likert_levels, 100, replace = TRUE),\n  q2 = sample(likert_levels, 100, replace = TRUE),\n  q3 = sample(likert_levels, 100, replace = TRUE),\n  group = sample(c(\"pre\", \"post\"), 100, replace = TRUE)\n) |> \n  mutate(across(-group, ~factor(.x, levels = setdiff(likert_levels, NA))),\n         group = factor(group, levels = c(\"pre\", \"post\")))\n\np <- gglikert(\n  data = df,\n  include = q1:q3,\n  add_labels = FALSE\n)\n\np_df <- layer_data(p)\np_df$correct_x <- (p_df$xmax + p_df$xmin) / 2\np + annotate(geom=\"text\", x = p_df$correct_x, y = p_df$y, label = p_df$count)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
