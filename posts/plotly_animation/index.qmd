@@ -1,31 +1,24 @@
 ---
 title: "Plotly animation"
 author: "tarjae"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-categories: [plotly, animation]
+categories: [barplot, plotly, animation]
+image: "Animated_barplot.png"
+date: last-modified
+date-format: "[Last Updated on] MMMM, YYYY"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
 ---
 
-This is a plotly animation using frame label tweaking. See [original code from stackoverflow](#0):
-
----
-title: "Animated Bar Plot with Plotly"
-output: html_document
----
-
-
-## Animated Bar Chart (Plotly): 
-
-@fig-plotly_animated shows an animated bar chart with user defined frame label.
+## Animated Bar Chart (Plotly):
 
 ```{r}
-#| label: fig-plotly_animated
-#| fig-cap: "Animated bar chart"
 #| warning: false
-#| code-fold: true
-#| code-summary: "expand for full code"
 
 library(dplyr)
 library(plotly)
+library(knitr)
 
 DF <- data.frame(
   year = rep(seq(1980L, 2020L), each = 12), 
@@ -40,10 +33,9 @@ DF %>%
     y = ~avg_depth,
     frame = ~paste0(sprintf("%02d", month), " - ", month_char),
     type = 'bar'
-  ) %>%
+  ) %>% 
   animation_opts(frame = 1500, redraw = FALSE) %>% # Increase the frame duration for slower animation
   animation_slider(
     currentvalue = list(prefix = "Month: ")
   )
-
 ```

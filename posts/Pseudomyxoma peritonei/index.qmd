@@ -1,9 +1,18 @@
 ---
 title: "Pseudomyxoma peritonei"
-author: "TJ"
-image: "Pseudomyxom1.png"
+author: "tarjae"
+categories: [Pseudomyxoma peritonei, intraoperative image]
+image: "Pseudomyxom1.jpg"
+date: last-modified
+date-format: "[Last Updated on] MMMM, YYYY"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
 ---
 
 ## this is my test post
 
-![](Pseudomyxom1.png){fig-align="center"}
+bla bla this could be a text for my blog
+
+![](Pseudomyxom1.jpg){fig-align="center"}
