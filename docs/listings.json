@@ -2,17 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
-<<<<<<< HEAD
-      "/posts/plotly_animation/index.html",
       "/posts/Pseudomyxoma peritonei/index.html",
+      "/posts/plotly_animation/index.html",
       "/posts/likert/index.html"
-=======
-      "/posts/likert/index.html",
-      "/posts/Pseudomyxoma peritonei/index.html",
-      "/posts/plotly_animation/index.html",
-      "/posts/Example_assignment/index.html",
-      "/posts/my_first_post/index.html"
->>>>>>> 0970a2d775a83bc98a6895d71e59ae88fe6df6d9
     ]
   }
 ]

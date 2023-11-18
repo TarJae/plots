@@ -2,11 +2,7 @@
 title: "Pseudomyxoma peritonei"
 author: "tarjae"
 categories: [Pseudomyxoma peritonei, intraoperative image]
-<<<<<<< HEAD
 image: "Pseudomyxom1.jpg"
-=======
-image: "Pseudomyxom1.png"
->>>>>>> 0970a2d775a83bc98a6895d71e59ae88fe6df6d9
 date: last-modified
 date-format: "[Last Updated on] MMMM, YYYY"
 format:
