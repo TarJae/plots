@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "quartoCourseBlog",
     "section": "",
-    "text": "Pseudomyxoma peritonei\n\n\n\n\n\n\n\nPseudomyxoma peritonei\n\n\nintraoperative image\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nPlotly animation\n\n\n\n\n\n\n\nbarplot\n\n\nplotly\n\n\nanimation\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nLikert plot\n\n\n\n\n\n\n\nlikert\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\nNo matching items"
+    "text": "Pie Chart\n\n\n\n\n\n\n\npiechart\n\n\n\n\n\n\n\n\n\n\n\nDec 4, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nLikert plot\n\n\n\n\n\n\n\nlikert\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nPseudomyxoma peritonei\n\n\n\n\n\n\n\nPseudomyxoma peritonei\n\n\nintraoperative image\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\n  \n\n\n\n\nPlotly animation\n\n\n\n\n\n\n\nbarplot\n\n\nplotly\n\n\nanimation\n\n\n\n\n\n\n\n\n\n\n\nNov 18, 2023\n\n\ntarjae\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/likert/index.html",
@@ -26,6 +26,20 @@
     "title": "Likert plot",
     "section": "",
     "text": "Show the code\n# https://stackoverflow.com/questions/77505716/how-to-add-count-labels-to-faceted-likert-plot-ggstatsgglikert\n\n#remotes::install_github(\"larmarange/ggstats\")\nlibrary(ggstats)\nlibrary(ggplot2)\nlibrary(dplyr)\n\nlikert_levels &lt;- c(\"strongly disagree\", \"disagree\", \"neutral\", \"agree\", \"strongly agree\", NA)\nset.seed(123)\ndf &lt;- data.frame(\n  q1 = sample(likert_levels, 100, replace = TRUE),\n  q2 = sample(likert_levels, 100, replace = TRUE),\n  q3 = sample(likert_levels, 100, replace = TRUE),\n  group = sample(c(\"pre\", \"post\"), 100, replace = TRUE)\n) |&gt; \n  mutate(across(-group, ~factor(.x, levels = setdiff(likert_levels, NA))),\n         group = factor(group, levels = c(\"pre\", \"post\")))\n\np &lt;- gglikert(\n  data = df,\n  include = q1:q3,\n  add_labels = FALSE\n)\n\np_df &lt;- layer_data(p)\np_df$correct_x &lt;- (p_df$xmax + p_df$xmin) / 2\np + annotate(geom=\"text\", x = p_df$correct_x, y = p_df$y, label = p_df$count)"
+  },
+  {
+    "objectID": "posts/pie_chart/index.html",
+    "href": "posts/pie_chart/index.html",
+    "title": "Pie Chart",
+    "section": "",
+    "text": "Show the code\n# https://stackoverflow.com/questions/77600362/adjusting-the-size-of-several-pie-charts-in-ggplot2\n\nlibrary(dplyr)\nlibrary(ggplot2)\n\n\ndf &lt;- data.frame(Subjects = c(\"Literature\", \"Literature\", \"Geography\", \"Geography\", \"Arts\", \"Arts\", \n                              \"English\", \"English\", \"Math\", \"Math\", \"History\", \"History\", \n                              \"Biology\", \"Biology\", \"French\", \"French\"),\n                 Sex = rep(c(\"Girls\", \"Boys\"), 2),\n                 N = c(15, 20, 30, 22, 77, 40, 14, 17, \n                       80, 78, 52, 65, 32, 56, 89, 41)) |&gt;\n  group_by(Subjects) |&gt;\n  mutate(pct = proportions(N) * 100) |&gt;\n  mutate_at(vars(pct), list(~ round(., 1))) |&gt;\n  ungroup()\n\n\n\ndf |&gt;\n  mutate(size = sum(N), .by = Subjects) |&gt;\n  ggplot(aes(x = sqrt(size)/2, y = pct, fill = Sex)) +\n  geom_col(aes(width = sqrt(size)), color = \"white\", \n           na.rm = TRUE) +\n  coord_polar(\"y\", start = 0) +\n  facet_wrap(~ Subjects,\n             ncol = 4,\n             strip.position = \"bottom\") +\n  geom_text(aes(y = pct, label = paste0(pct, \"%\")), size = 5, \n            position = position_stack(vjust = 0.5))+\n  theme_void() +\n  theme(legend.title=element_blank(),\n        strip.text = element_text(size = 12)) +\n  theme(plot.title = element_text(hjust = 0.0),\n        legend.text = element_text(size = 12),\n        legend.spacing.y = unit(0.0, 'cm'),\n        legend.box.spacing = unit(-2, \"pt\")) + \n  guides(fill = guide_legend(byrow = TRUE)) + \n  scale_fill_brewer(palette = \"Set2\")"
+  },
+  {
+    "objectID": "posts/pie_chart/index.html#likert-plot",
+    "href": "posts/pie_chart/index.html#likert-plot",
+    "title": "Pie Chart",
+    "section": "",
+    "text": "Show the code\n# https://stackoverflow.com/questions/77600362/adjusting-the-size-of-several-pie-charts-in-ggplot2\n\nlibrary(dplyr)\nlibrary(ggplot2)\n\n\ndf &lt;- data.frame(Subjects = c(\"Literature\", \"Literature\", \"Geography\", \"Geography\", \"Arts\", \"Arts\", \n                              \"English\", \"English\", \"Math\", \"Math\", \"History\", \"History\", \n                              \"Biology\", \"Biology\", \"French\", \"French\"),\n                 Sex = rep(c(\"Girls\", \"Boys\"), 2),\n                 N = c(15, 20, 30, 22, 77, 40, 14, 17, \n                       80, 78, 52, 65, 32, 56, 89, 41)) |&gt;\n  group_by(Subjects) |&gt;\n  mutate(pct = proportions(N) * 100) |&gt;\n  mutate_at(vars(pct), list(~ round(., 1))) |&gt;\n  ungroup()\n\n\n\ndf |&gt;\n  mutate(size = sum(N), .by = Subjects) |&gt;\n  ggplot(aes(x = sqrt(size)/2, y = pct, fill = Sex)) +\n  geom_col(aes(width = sqrt(size)), color = \"white\", \n           na.rm = TRUE) +\n  coord_polar(\"y\", start = 0) +\n  facet_wrap(~ Subjects,\n             ncol = 4,\n             strip.position = \"bottom\") +\n  geom_text(aes(y = pct, label = paste0(pct, \"%\")), size = 5, \n            position = position_stack(vjust = 0.5))+\n  theme_void() +\n  theme(legend.title=element_blank(),\n        strip.text = element_text(size = 12)) +\n  theme(plot.title = element_text(hjust = 0.0),\n        legend.text = element_text(size = 12),\n        legend.spacing.y = unit(0.0, 'cm'),\n        legend.box.spacing = unit(-2, \"pt\")) + \n  guides(fill = guide_legend(byrow = TRUE)) + \n  scale_fill_brewer(palette = \"Set2\")"
   },
   {
     "objectID": "posts/plotly_animation/index.html",
