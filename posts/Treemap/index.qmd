@@ -1,0 +1,59 @@
+---
+title: "Plotly treemap"
+author: "tarjae"
+image: "plotly_treemap.png"
+categories: [treemap]
+date: last-modified
+date-format: "[Last Updated on] MMMM, YYYY"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## Plotly treemap:
+
+```{r}
+#| warning: false
+
+library(plotly)
+library(dplyr)
+
+dtd7 <- structure(
+  list(
+    topic = structure(
+      c(9L, 8L, 4L, 7L, 2L, 6L, 1L, 3L, 5L, 10L, 13L, 11L, 12L),
+      .Label = c("Owners' Equivalent Rent of Residences", "Rent of Primary Residence",
+                 "New Vehicles", "Used Cars and Trucks", "Cereals And bakery Products",
+                 "Motor Vehicle Maintenance and Repair", "Airline Fares",
+                 "Apparel", "Alcoholic Beverages", "Hospital Services",
+                 "Tobacco and Smoking", "Physicians Services", "Gasoline All Types",
+                 "Electricity", "Utility (Piped) Gas Services",
+                 "Nonalcoholic Beverages and Beverage Materials",
+                 "Food Away From Home", "Meats Poultry Fish and", 
+                 "Fruits and Vegetables", "Dairy and Related Products",
+                 "Cereals And bakery Products", "Other Foods at Home"),
+      class = "factor"),
+    n = structure(
+      c(4L, 3L, 9L, 11L, 12L, 2L, 1L, 6L, 10L, 5L, 7L, 8L, 1L),
+      .Label = c("6.7", "6.9", "1.4", "3.8", "19.2", "8.5", "12.1", "1.1", "5", "2.9", 
+                 "6.3", "7.7", "0.7", "8.9", "3.4", "10.4", "2.9", "5.3", "0.1", "0.4", 
+                 "1.4", "3.4", "3.3"),
+      class = "factor")
+  ),
+  class = "data.frame",
+  row.names = c(NA, -13L)
+)
+
+
+
+plot_ly(
+  dtd7 %>% 
+    mutate(n = as.numeric(as.character(n))), #transform to numeric
+  labels = ~topic,
+  parents = NA,
+  values = ~n,
+  type = 'treemap',
+  hovertemplate = "Category: %{label}<br>Percent: %{value}%<extra></extra>" #added % after value!
+)
+```

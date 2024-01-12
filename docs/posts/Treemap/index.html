@@ -8,7 +8,7 @@
 
 <meta name="author" content="tarjae">
 
-<title>quartoCourseBlog - Pie Chart</title>
+<title>quartoCourseBlog - Plotly treemap</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,6 +93,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script src="../../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="../../site_libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -140,9 +148,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Pie Chart</h1>
+      <h1 class="title">Plotly treemap</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">piechart</div>
+                <div class="quarto-category">treemap</div>
               </div>
                   </div>
   </div>
@@ -178,53 +186,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="pie-chart" class="level2">
-<h2 class="anchored" data-anchor-id="pie-chart">Pie Chart:</h2>
+<section id="plotly-treemap" class="level2">
+<h2 class="anchored" data-anchor-id="plotly-treemap">Plotly treemap:</h2>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://stackoverflow.com/questions/77600362/adjusting-the-size-of-several-pie-charts-in-ggplot2</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Subjects =</span> <span class="fu">c</span>(<span class="st">"Literature"</span>, <span class="st">"Literature"</span>, <span class="st">"Geography"</span>, <span class="st">"Geography"</span>, <span class="st">"Arts"</span>, <span class="st">"Arts"</span>, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"English"</span>, <span class="st">"English"</span>, <span class="st">"Math"</span>, <span class="st">"Math"</span>, <span class="st">"History"</span>, <span class="st">"History"</span>, </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Biology"</span>, <span class="st">"Biology"</span>, <span class="st">"French"</span>, <span class="st">"French"</span>),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Sex =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Girls"</span>, <span class="st">"Boys"</span>), <span class="dv">2</span>),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">N =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">22</span>, <span class="dv">77</span>, <span class="dv">40</span>, <span class="dv">14</span>, <span class="dv">17</span>, </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">80</span>, <span class="dv">78</span>, <span class="dv">52</span>, <span class="dv">65</span>, <span class="dv">32</span>, <span class="dv">56</span>, <span class="dv">89</span>, <span class="dv">41</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Subjects) <span class="sc">|&gt;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pct =</span> <span class="fu">proportions</span>(N) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(<span class="fu">vars</span>(pct), <span class="fu">list</span>(<span class="sc">~</span> <span class="fu">round</span>(., <span class="dv">1</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">size =</span> <span class="fu">sum</span>(N), <span class="at">.by =</span> Subjects) <span class="sc">|&gt;</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">sqrt</span>(size)<span class="sc">/</span><span class="dv">2</span>, <span class="at">y =</span> pct, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">width =</span> <span class="fu">sqrt</span>(size)), <span class="at">color =</span> <span class="st">"white"</span>, </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>           <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="st">"y"</span>, <span class="at">start =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Subjects,</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">4</span>,</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">strip.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> pct, <span class="at">label =</span> <span class="fu">paste0</span>(pct, <span class="st">"%"</span>)), <span class="at">size =</span> <span class="dv">5</span>, </span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))<span class="sc">+</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.title=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)) <span class="sc">+</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.0</span>),</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="fl">0.0</span>, <span class="st">'cm'</span>),</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.box.spacing =</span> <span class="fu">unit</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="st">"pt"</span>)) <span class="sc">+</span> </span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">byrow =</span> <span class="cn">TRUE</span>)) <span class="sc">+</span> </span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dtd7 <span class="ot">&lt;-</span> <span class="fu">structure</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">topic =</span> <span class="fu">structure</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(9L, 8L, 4L, 7L, 2L, 6L, 1L, 3L, 5L, 10L, 13L, 11L, 12L),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">.Label =</span> <span class="fu">c</span>(<span class="st">"Owners' Equivalent Rent of Residences"</span>, <span class="st">"Rent of Primary Residence"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"New Vehicles"</span>, <span class="st">"Used Cars and Trucks"</span>, <span class="st">"Cereals And bakery Products"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Motor Vehicle Maintenance and Repair"</span>, <span class="st">"Airline Fares"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Apparel"</span>, <span class="st">"Alcoholic Beverages"</span>, <span class="st">"Hospital Services"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Tobacco and Smoking"</span>, <span class="st">"Physicians Services"</span>, <span class="st">"Gasoline All Types"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Electricity"</span>, <span class="st">"Utility (Piped) Gas Services"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Nonalcoholic Beverages and Beverage Materials"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Food Away From Home"</span>, <span class="st">"Meats Poultry Fish and"</span>, </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Fruits and Vegetables"</span>, <span class="st">"Dairy and Related Products"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Cereals And bakery Products"</span>, <span class="st">"Other Foods at Home"</span>),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">class =</span> <span class="st">"factor"</span>),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">structure</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(4L, 3L, 9L, 11L, 12L, 2L, 1L, 6L, 10L, 5L, 7L, 8L, 1L),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">.Label =</span> <span class="fu">c</span>(<span class="st">"6.7"</span>, <span class="st">"6.9"</span>, <span class="st">"1.4"</span>, <span class="st">"3.8"</span>, <span class="st">"19.2"</span>, <span class="st">"8.5"</span>, <span class="st">"12.1"</span>, <span class="st">"1.1"</span>, <span class="st">"5"</span>, <span class="st">"2.9"</span>, </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"6.3"</span>, <span class="st">"7.7"</span>, <span class="st">"0.7"</span>, <span class="st">"8.9"</span>, <span class="st">"3.4"</span>, <span class="st">"10.4"</span>, <span class="st">"2.9"</span>, <span class="st">"5.3"</span>, <span class="st">"0.1"</span>, <span class="st">"0.4"</span>, </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"1.4"</span>, <span class="st">"3.4"</span>, <span class="st">"3.3"</span>),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">class =</span> <span class="st">"factor"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">class =</span> <span class="st">"data.frame"</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="sc">-</span>13L)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_ly</span>(</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  dtd7 <span class="sc">%&gt;%</span> </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(n))), <span class="co">#transform to numeric</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="sc">~</span>topic,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">parents =</span> <span class="cn">NA</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">values =</span> <span class="sc">~</span>n,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">'treemap'</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">hovertemplate =</span> <span class="st">"Category: %{label}&lt;br&gt;Percent: %{value}%&lt;extra&gt;&lt;/extra&gt;"</span> <span class="co">#added % after value!</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6a422198a705b59b5795" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-6a422198a705b59b5795">{"x":{"visdat":{"48c01a7fbdf":["function () ","plotlyVisDat"]},"cur_data":"48c01a7fbdf","attrs":{"48c01a7fbdf":{"labels":{},"parents":null,"values":{},"hovertemplate":"Category: %{label}<br>Percent: %{value}%<extra><\/extra>","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"treemap"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["Alcoholic Beverages","Apparel","Used Cars and Trucks","Airline Fares","Rent of Primary Residence","Motor Vehicle Maintenance and Repair","Owners' Equivalent Rent of Residences","New Vehicles","Cereals And bakery Products","Hospital Services","Gasoline All Types","Tobacco and Smoking","Physicians Services"],"parents":[null,null,null,null,null,null,null,null,null,null,null,null,null],"values":[3.7999999999999998,1.3999999999999999,5,6.2999999999999998,7.7000000000000002,6.9000000000000004,6.7000000000000002,8.5,2.8999999999999999,19.199999999999999,12.1,1.1000000000000001,6.7000000000000002],"hovertemplate":["Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>","Category: %{label}<br>Percent: %{value}%<extra><\/extra>"],"type":"treemap","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 

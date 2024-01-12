@@ -1,0 +1,64 @@
+---
+title: "Key glyph for legend"
+author: "tarjae"
+image: "glyph_legend_vertical.png"
+categories: [glyph]
+date: last-modified
+date-format: "[Last Updated on] MMMM, YYYY"
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+---
+
+## Key glyph legend:
+
+```{r}
+#| warning: false
+# https://stackoverflow.com/questions/77809065/ggplot2-legend-icon-mismatch-for-horizontal-and-vertical-lines#77809293
+# https://bookdown.dongzhuoer.com/hadley/ggplot2-book/legend-glyph.html
+# https://ggplot2.tidyverse.org/reference/draw_key.html
+# https://stackoverflow.com/questions/65798204/how-to-avoid-the-crossing-effect-in-legend-with-geom-vline-and-geom-hline-on-t
+
+library(ggplot2)
+
+ggplot(iris, aes(Petal.Width, Petal.Length)) +
+  geom_point(aes(color = Species)) +
+  geom_hline(aes(yintercept = 4, lty = 'Horizontal'),
+             color = 'steelblue', lwd = 2, key_glyph = 'path') +
+  geom_vline(aes(xintercept = 2, linewidth = 'Vertical'),
+             color = 'firebrick', key_glyph = 'vline') +
+  guides(color = guide_legend(order = 1),
+         linewidth = guide_legend(title = NULL, order = 2),
+         linetype = guide_legend(title = NULL, order = 3))
+
+# OR
+
+# library(ggplot2)
+# glyph_vline <- function(data, params, size) {
+#   if (data$colour == 'firebrick') {
+#     draw_key_vline(data, params, size)
+#   } else {
+#     zeroGrob()
+#   }
+# }
+# 
+# glyph_hline <- function(data, params, size) {
+#   if (data$colour == 'steelblue') {
+#     draw_key_path(data, params, size)
+#   } else {
+#     zeroGrob()
+#   }
+# }
+# 
+# ggplot(iris, aes(Petal.Width, Petal.Length)) +
+#   geom_point(aes(color = Species)) +
+#   geom_hline(aes(yintercept = 4, lty = 'Horizontal'),
+#              color = 'steelblue', lwd = 2, key_glyph = glyph_hline) +
+#   geom_vline(aes(xintercept = 2, lty = 'Vertical'),
+#              color = 'firebrick', lwd = 2, key_glyph = glyph_vline) +
+#   scale_linetype_manual(name = "Lines", values = c("solid","solid")) +
+#   guides(lty = guide_legend(title = 'Lines',
+#                             override.aes = list(color = c('steelblue', 'firebrick'),
+#                                                 lty = c('solid', 'solid'))))
+```

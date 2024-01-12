@@ -1,0 +1,16 @@
+{
+  "hash": "5429e0aff3ec61695ddc563bb9bdba90",
+  "result": {
+    "markdown": "---\ntitle: \"Key glyph for legend\"\nauthor: \"tarjae\"\nimage: \"glyph_legend_vertical.png\"\ncategories: [glyph]\ndate: last-modified\ndate-format: \"[Last Updated on] MMMM, YYYY\"\nformat:\n  html:\n    code-fold: true\n    code-summary: \"Show the code\"\n---\n\n\n## Key glyph legend:\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# https://stackoverflow.com/questions/77809065/ggplot2-legend-icon-mismatch-for-horizontal-and-vertical-lines#77809293\n# https://bookdown.dongzhuoer.com/hadley/ggplot2-book/legend-glyph.html\n# https://ggplot2.tidyverse.org/reference/draw_key.html\n# https://stackoverflow.com/questions/65798204/how-to-avoid-the-crossing-effect-in-legend-with-geom-vline-and-geom-hline-on-t\n\nlibrary(ggplot2)\n\nggplot(iris, aes(Petal.Width, Petal.Length)) +\n  geom_point(aes(color = Species)) +\n  geom_hline(aes(yintercept = 4, lty = 'Horizontal'),\n             color = 'steelblue', lwd = 2, key_glyph = 'path') +\n  geom_vline(aes(xintercept = 2, linewidth = 'Vertical'),\n             color = 'firebrick', key_glyph = 'vline') +\n  guides(color = guide_legend(order = 1),\n         linewidth = guide_legend(title = NULL, order = 2),\n         linetype = guide_legend(title = NULL, order = 3))\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n\n```{.r .cell-code}\n# OR\n\n# library(ggplot2)\n# glyph_vline <- function(data, params, size) {\n#   if (data$colour == 'firebrick') {\n#     draw_key_vline(data, params, size)\n#   } else {\n#     zeroGrob()\n#   }\n# }\n# \n# glyph_hline <- function(data, params, size) {\n#   if (data$colour == 'steelblue') {\n#     draw_key_path(data, params, size)\n#   } else {\n#     zeroGrob()\n#   }\n# }\n# \n# ggplot(iris, aes(Petal.Width, Petal.Length)) +\n#   geom_point(aes(color = Species)) +\n#   geom_hline(aes(yintercept = 4, lty = 'Horizontal'),\n#              color = 'steelblue', lwd = 2, key_glyph = glyph_hline) +\n#   geom_vline(aes(xintercept = 2, lty = 'Vertical'),\n#              color = 'firebrick', lwd = 2, key_glyph = glyph_vline) +\n#   scale_linetype_manual(name = \"Lines\", values = c(\"solid\",\"solid\")) +\n#   guides(lty = guide_legend(title = 'Lines',\n#                             override.aes = list(color = c('steelblue', 'firebrick'),\n#                                                 lty = c('solid', 'solid'))))\n```\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

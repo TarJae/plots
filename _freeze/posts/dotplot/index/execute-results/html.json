@@ -1,0 +1,16 @@
+{
+  "hash": "86f10cdc09ba5c5a0626a67450fb43d3",
+  "result": {
+    "markdown": "---\ntitle: \"dotplot\"\nauthor: \"tarjae\"\nimage: \"dotplot.png\"\ncategories: [dotplot]\ndate: last-modified\ndate-format: \"[Last Updated on] MMMM, YYYY\"\nformat:\n  html:\n    code-fold: true\n    code-summary: \"Show the code\"\n---\n\n\n## dotplot:\n\n\n::: {.cell}\n\n```{.r .cell-code}\n# https://stackoverflow.com/questions/71522196/how-to-customize-a-dumbbell-plot-in-r\n\nlibrary(ggplot2)\nlibrary(dplyr)\n\nSubpopulation <- c(\"Female\", \"Female\", \"Male\", \"Male\", \"Low income\",\"Low income\", \"Income < 65k\", \"Income < 65k\",\n\"Student\", \"Student\", \"Teacher\", \"Teacher\", \"Professor\", \"Professor\", \"Black\", \"Black\",\n\"Hispanic\", \"Hispanic\", \"Conservative\", \"Conservative\",  \"Liberal\",\n\"Liberal\", \"Progressive\", \"Progressive\")\nTreatment <- c(\"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\",\n\"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\", \"Treatment\", \"Pro\")\nValue <- c(\"57.3\", \"87.1\", \"62.54\", \"74.4\", \"54.6\", \"86.2\", \"41.3\", \"61.1\", \"39.6\", \"72.7\", \"63.5\", \"82.8\",\n\"64.6\", \"11.1\", \"37.4\", \"74.5\", \"58.6\", \"77.8\", \"47.6\", \"80\", \"75.6\", \"89\", \"54.1\", \"83.3\")\nmydf <- data.frame(Subpopulation, Treatment, Value) ##data\nmydf$Value <- as.numeric(mydf$Value)\n\nmydf %>%\n  group_by(Subpopulation) %>%\n  mutate(Difference = Value - lead(Value),\n         Position = Value - (0.5 * Difference)) %>%\n  ggplot(aes(x = Value, y = Subpopulation)) +\n  geom_vline(xintercept = c(41.5, 72.2),\n             lty = 2, alpha = 0.5) +\n  annotate(geom = \"text\",\n           x = c(41.5),\n           y = \"\",\n           label = \"Average: 41.5\") +\n  annotate(geom = \"text\",\n           x = c(72.2),\n           y = \"\",\n           label = \"Average: 72.2\") +\n  coord_cartesian(clip = \"off\") +\n  geom_line(aes(group = Subpopulation)) +\n  geom_point(aes(color = Treatment), size=3) +\n  geom_text(aes(label = abs(Difference),\n                y = Subpopulation,\n                x = Position),\n            nudge_y = 0.25, size = 3) +\n  theme_classic(base_size = 12) +\n  theme(legend.position = \"top\") +\n  scale_color_brewer(palette = \"Dark2\") +\n  theme(axis.ticks.y = element_line(colour = c(\"transparent\",\n                                               rep(\"black\", 12))))\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

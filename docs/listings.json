@@ -2,7 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Treemap/index.html",
       "/posts/pie_chart/index.html",
+      "/posts/glyph/index.html",
+      "/posts/dotplot/index.html",
       "/posts/likert/index.html",
       "/posts/Pseudomyxoma peritonei/index.html",
       "/posts/plotly_animation/index.html"

@@ -11,7 +11,7 @@ format:
     code-summary: "Show the code"
 ---
 
-## Likert plot:
+## Pie Chart:
 
 ```{r}
 #| warning: false
